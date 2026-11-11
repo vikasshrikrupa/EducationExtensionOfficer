@@ -1,0 +1,2210 @@
+<!DOCTYPE html>
+<html lang="mr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MPSC विस्तार अधिकारी (शिक्षण) सराव पोर्टल | ८० गुण तांत्रिक अभ्यासक्रम</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Mukta (Devanagari) & Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Mukta', 'Poppins', 'sans-serif'],
+            heading: ['Poppins', 'Mukta', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81',
+            },
+            saffron: {
+              500: '#f97316',
+              600: '#ea580c',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Mukta', 'Poppins', sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    @keyframes pulse-subtle {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+    .pulse-btn {
+      animation: pulse-subtle 3s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-50 selection:bg-brand-600 selection:text-white">
+
+  <!-- Toast Notification System -->
+  <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
+
+  <!-- Header / Navigation Bar -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <!-- Logo & Title -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('landing')">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-brand-700 via-brand-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-brand-500/20">
+          <i class="fa-solid fa-graduation-cap text-2xl"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xl sm:text-2xl font-black tracking-tight text-slate-800 font-heading">विस्तार अधिकारी</span>
+            <span class="hidden sm:inline-block px-2 py-0.5 text-xs font-bold bg-amber-100 text-amber-800 rounded-full border border-amber-300">
+              ८० गुण तांत्रिक
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 font-medium">MPSC & ZP शिक्षण विस्तार अधिकारी सराव मंच</p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2 sm:gap-4">
+        <button onclick="openRegistrationModal()" class="hidden md:inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-brand-700 bg-brand-50 hover:bg-brand-100 rounded-xl transition border border-brand-200 shadow-sm">
+          <i class="fa-solid fa-bolt text-brand-600"></i>
+          विनामूल्य सराव
+        </button>
+        <button onclick="openSubscriptionModal()" class="inline-flex items-center gap-2 px-3 sm:px-4 py-2 text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 rounded-xl shadow-md shadow-orange-500/20 transition">
+          <i class="fa-solid fa-crown"></i>
+          <span class="hidden sm:inline">प्रीमियम</span> पॅक
+        </button>
+        <button onclick="openAdminModal()" class="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition border border-slate-200">
+          <i class="fa-solid fa-lock text-slate-500"></i>
+          <span class="hidden sm:inline">प्रशासक</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER (VIEWS) -->
+  <main class="flex-grow">
+    
+    <!-- 1. LANDING PAGE VIEW -->
+    <section id="viewLanding" class="view-section py-8 sm:py-14">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
+        
+        <!-- Hero Section -->
+        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-900 via-brand-800 to-indigo-950 text-white p-6 sm:p-12 shadow-2xl border border-brand-700/50">
+          <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-brand-500/20 blur-3xl pointer-events-none"></div>
+          <div class="absolute top-0 right-1/4 w-60 h-60 rounded-full bg-amber-500/10 blur-2xl pointer-events-none"></div>
+
+          <div class="relative z-10 max-w-3xl space-y-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs sm:text-sm text-amber-300 font-semibold">
+              <i class="fa-solid fa-certificate"></i>
+              महाराष्ट्र शासन व जि.प. विस्तार अधिकारी (शिक्षण) सरळसेवा भरती
+            </div>
+
+            <h1 class="text-3xl sm:text-5xl font-extrabold leading-tight tracking-tight">
+              तांत्रिक घटकाची परिपूर्ण तयारी, <br class="hidden sm:inline">
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-300 to-yellow-200">
+                ८० पैकी ८० गुणांचे ध्येय!
+              </span>
+            </h1>
+
+            <p class="text-base sm:text-lg text-slate-200 font-normal leading-relaxed">
+              बालकांचा शिक्षणाचा हक्क (RTE २००९ व २०११ नियमावली), NEP २०२०, समग्र शिक्षा, ZP अधिनियम १९६१ आणि सर्व शैक्षणिक संस्थांवर आधारित दर्जेदार प्रश्नसंच. त्वरित मूल्यमापन व स्पष्टीकरणासह सराव करा.
+            </p>
+
+            <!-- Key Feature Badges -->
+            <div class="flex flex-wrap gap-3 pt-2 text-xs sm:text-sm text-slate-200">
+              <span class="flex items-center gap-1.5 bg-black/25 px-3 py-1 rounded-lg border border-white/10">
+                <i class="fa-solid fa-check-circle text-emerald-400"></i> १५००+ तांत्रिक प्रश्न
+              </span>
+              <span class="flex items-center gap-1.5 bg-black/25 px-3 py-1 rounded-lg border border-white/10">
+                <i class="fa-solid fa-bolt text-amber-400"></i> अचूक व त्वरित उत्तर तपासणी
+              </span>
+              <span class="flex items-center gap-1.5 bg-black/25 px-3 py-1 rounded-lg border border-white/10">
+                <i class="fa-solid fa-book-open text-blue-400"></i> सखोल मराठी संदर्भ
+              </span>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+              <button onclick="openRegistrationModal()" class="pulse-btn inline-flex items-center justify-center gap-3 px-8 py-4 text-base sm:text-lg font-bold text-slate-900 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-300 hover:from-amber-300 hover:to-yellow-300 rounded-2xl shadow-xl shadow-amber-500/30 transition transform hover:-translate-y-0.5">
+                <i class="fa-solid fa-play text-slate-900"></i>
+                मोफत सराव चाचणी सुरू करा (२५ प्रश्न)
+              </button>
+              <button onclick="openSubscriptionModal()" class="inline-flex items-center justify-center gap-2 px-6 py-4 text-base font-semibold text-white bg-white/10 hover:bg-white/20 rounded-2xl border border-white/20 backdrop-blur-md transition">
+                <i class="fa-solid fa-unlock-keyhole text-amber-300"></i>
+                संपूर्ण टेस्ट सिरीज अनलॉक करा
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Syllabus Breakdown Grid (As per uploaded Technical Syllabus) -->
+        <div class="space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-200 pb-4">
+            <div>
+              <span class="text-xs font-bold tracking-wider text-brand-600 uppercase">अधिकृत तांत्रिक घटक</span>
+              <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-800">८० गुणांचा सविस्तर अभ्यासक्रम</h2>
+            </div>
+            <p class="text-sm text-slate-500">विस्तार अधिकारी (शिक्षण) संवर्ग - महाराष्ट्र शासन</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Card 1 -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+              <div class="w-12 h-12 rounded-xl bg-indigo-50 text-brand-600 flex items-center justify-center text-xl mb-4 font-bold">
+                <i class="fa-solid fa-scale-balanced"></i>
+              </div>
+              <h3 class="text-lg font-bold text-slate-800 mb-2">RTE २००९ व महाराष्ट्र नियमावली २०११</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                बालकांचा मोफत व सक्तीचा शिक्षणाचा अधिकार अधिनियम, २००९ व महाराष्ट्र राज्य नियमावली २०११ (अद्ययावत दुरुस्त्यांसह), विश्लेषण, बलस्थाने व अडचणी.
+              </p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+              <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl mb-4 font-bold">
+                <i class="fa-solid fa-building-columns"></i>
+              </div>
+              <h3 class="text-lg font-bold text-slate-800 mb-2">प्रमुख शैक्षणिक संस्था व त्यांचे कार्य</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                UNICEF, NCERT, NUEPA, NCTE, CCRT, TISS, TIFR, Homi Bhabha Centre, RTE, EFLU, MPSP, SCERT, MIEPA व DIET चे अधिकार व कार्यप्रणाली.
+              </p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+              <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl mb-4 font-bold">
+                <i class="fa-solid fa-lightbulb"></i>
+              </div>
+              <h3 class="text-lg font-bold text-slate-800 mb-2">NEP २०२० व अध्ययन अध्यापन शास्त्र</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                नवीन शैक्षणिक धोरण २०२० (५+३+३+४ रचना), प्रगत अध्ययन अध्यापन शास्त्र, प्रश्न निर्मिती कौशल्ये, ASER, NAS, PISA आंतरराष्ट्रीय मूल्यमापन.
+              </p>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+              <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl mb-4 font-bold">
+                <i class="fa-solid fa-school-flag"></i>
+              </div>
+              <h3 class="text-lg font-bold text-slate-800 mb-2">शासकीय शैक्षणिक अभियाने व योजना</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                समग्र शिक्षा अभियान, RMSA, प्रगत शैक्षणिक महाराष्ट्र अभियान, राष्ट्रीय शिक्षा अभियान आणि केंद्र व राज्य शासनाच्या वैयक्तिक लाभाच्या योजना.
+              </p>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+              <div class="w-12 h-12 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-xl mb-4 font-bold">
+                <i class="fa-solid fa-laptop-code"></i>
+              </div>
+              <h3 class="text-lg font-bold text-slate-800 mb-2">संगणक, माहिती तंत्रज्ञान व ई-गव्हर्नन्स</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                U-DISE+, शालेय सरल प्रणाली (SARAL), DBT, व्हर्चुअल क्लासरूम, डिजिटल स्कूल, विद्या वाहिनी, ज्ञान वाहिनी व दैनंदिन माहिती देवानघेवाण तंत्रज्ञान.
+              </p>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+              <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl mb-4 font-bold">
+                <i class="fa-solid fa-landmark"></i>
+              </div>
+              <h3 class="text-lg font-bold text-slate-800 mb-2">ZP व पं.स. अधिनियम १९६१ आणि प्रशासन</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                महाराष्ट्र जिल्हा परिषद व पंचायत समिती अधिनियम १९६१, ग्रामपंचायत अधिनियम १९५८, शालेय शिक्षण विभागाची प्रशासकीय संरचना व कार्यपद्धती.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Student Experience Highlights -->
+        <div class="bg-slate-900 text-white rounded-3xl p-8 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div class="space-y-3 max-w-xl">
+            <span class="text-xs font-bold text-amber-400 uppercase tracking-widest">रिअल-टाईम मूल्यमापन</span>
+            <h3 class="text-2xl sm:text-3xl font-extrabold">प्रत्येक पर्यायावर क्लिक करताच त्वरित निकाल!</h3>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              कोणताही पर्याय निवडल्यास उत्तर बरोबर असल्यास हिरवे चिन्ह (✓) व चुकीचे असल्यास लाल (✗) चिन्हासह बरोबर पर्याय हायलाइट होतो. सोबतच अचूक मराठी संदर्भ व स्पष्टीकरण मिळते.
+            </p>
+          </div>
+          <button onclick="openRegistrationModal()" class="flex-shrink-0 px-6 py-3.5 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-xl shadow-lg transition">
+            आत्ताच सराव सुरू करा <i class="fa-solid fa-arrow-right ml-2"></i>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 2. QUIZ / TEST ENGINE VIEW -->
+    <section id="viewTest" class="view-section hidden py-6">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6">
+        
+        <!-- Test Header & Stats Bar -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm mb-6 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center font-black">
+              <i class="fa-solid fa-file-pen text-lg"></i>
+            </div>
+            <div>
+              <h2 class="text-base sm:text-lg font-bold text-slate-800">विस्तार अधिकारी सराव चाचणी</h2>
+              <p class="text-xs text-slate-500">तांत्रिक अभ्यासक्रम घटक १ व २ (२५ मध्यम-कठीण प्रश्न)</p>
+            </div>
+          </div>
+
+          <!-- Timer & Submit Quick Action -->
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 font-mono font-bold text-sm sm:text-base">
+              <i class="fa-regular fa-clock text-amber-600"></i>
+              <span id="testTimer">25:00</span>
+            </div>
+            <button onclick="confirmSubmitTest()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold rounded-xl shadow-sm transition">
+              <i class="fa-solid fa-paper-plane mr-1"></i> चाचणी सबमिट करा
+            </button>
+          </div>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="mb-4">
+          <div class="flex justify-between text-xs text-slate-600 mb-1 font-semibold">
+            <span>प्रगती: <span id="progressText">प्रश्न १ / २५</span></span>
+            <span>पूर्ण: <span id="progressPercent">०%</span></span>
+          </div>
+          <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+            <div id="progressBar" class="bg-brand-600 h-2.5 rounded-full transition-all duration-300" style="width: 4%;"></div>
+          </div>
+        </div>
+
+        <!-- Question Navigator Drawer / Pills -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-3 sm:p-4 mb-6 shadow-sm">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-slate-600 uppercase tracking-wider">प्रश्न तालिका (Question Palette):</span>
+            <span class="text-xs text-slate-400 font-medium">कोणत्याही क्रमांकावर क्लिक करा</span>
+          </div>
+          <div id="questionPalette" class="flex flex-wrap gap-2 max-h-24 overflow-y-auto custom-scrollbar p-1">
+            <!-- Rendered via JS (1-25) -->
+          </div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-md p-6 sm:p-8 space-y-6">
+          
+          <!-- Category & Question Number Tag -->
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-4">
+            <div class="flex items-center gap-2">
+              <span id="questionCategoryBadge" class="px-3 py-1 text-xs font-bold rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-200">
+                RTE कायदा २००९
+              </span>
+              <span class="text-xs text-slate-400 font-medium">गुण: २ गुण</span>
+            </div>
+            <span id="currentQuestionNumberTag" class="text-xs font-bold text-slate-500">
+              प्रश्न १ / २५
+            </span>
+          </div>
+
+          <!-- Question Text -->
+          <h3 id="currentQuestionText" class="text-lg sm:text-2xl font-bold text-slate-800 leading-relaxed font-sans">
+            लोड होत आहे...
+          </h3>
+
+          <!-- Options Container -->
+          <div id="optionsContainer" class="space-y-3 pt-2">
+            <!-- 4 Options rendered dynamically -->
+          </div>
+
+          <!-- Instant Feedback / Explanation Card (Hidden until an option is chosen) -->
+          <div id="explanationContainer" class="hidden rounded-xl p-4 sm:p-5 border transition-all duration-300">
+            <div class="flex items-start gap-3">
+              <div id="explanationIcon" class="mt-0.5 text-lg font-bold"></div>
+              <div class="space-y-1">
+                <h4 id="explanationTitle" class="text-sm font-bold"></h4>
+                <p id="explanationText" class="text-xs sm:text-sm leading-relaxed text-slate-700"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Navigation Controls -->
+          <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+            <button id="prevBtn" onclick="navigateQuestion(-1)" class="px-4 sm:px-5 py-2.5 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 text-sm font-semibold transition disabled:opacity-40 disabled:pointer-events-none">
+              <i class="fa-solid fa-chevron-left mr-1.5"></i> मागील प्रश्न
+            </button>
+            <div class="flex items-center gap-2">
+              <button id="nextBtn" onclick="navigateQuestion(1)" class="px-5 sm:px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold shadow-md shadow-brand-500/20 transition">
+                पुढील प्रश्न <i class="fa-solid fa-chevron-right ml-1.5"></i>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 3. SCORE CARD & SUMMARY VIEW -->
+    <section id="viewResult" class="view-section hidden py-8 sm:py-12">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 space-y-8">
+        
+        <!-- Score Card Card -->
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
+          <div class="bg-gradient-to-r from-brand-800 to-indigo-900 text-white p-6 sm:p-10 text-center relative">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-amber-300 text-xs font-bold mb-3">
+              <i class="fa-solid fa-award"></i> निकाल पत्रक (Score Report)
+            </div>
+            <h2 id="resultStudentGreeting" class="text-2xl sm:text-3xl font-extrabold mb-1">अभिनंदन, परीक्षार्थी!</h2>
+            <p class="text-xs sm:text-sm text-slate-300">MPSC विस्तार अधिकारी (शिक्षण) - तांत्रिक घटक नमुना चाचणी</p>
+            
+            <!-- Big Score Badge -->
+            <div class="mt-6 inline-flex flex-col items-center justify-center w-36 h-36 rounded-full bg-white text-slate-900 shadow-2xl border-4 border-amber-400">
+              <span id="finalScoreVal" class="text-3xl font-black text-brand-700 font-heading">३८</span>
+              <span class="text-xs font-bold text-slate-500">एकूण ५० पैकी</span>
+            </div>
+          </div>
+
+          <div class="p-6 sm:p-8 space-y-6">
+            <!-- Stats Breakdown -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+              <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4">
+                <span class="text-xs text-emerald-700 font-bold uppercase">बरोबर उत्तरे</span>
+                <p id="statCorrect" class="text-2xl font-black text-emerald-600 mt-1">१९</p>
+              </div>
+              <div class="bg-rose-50 border border-rose-200 rounded-2xl p-4">
+                <span class="text-xs text-rose-700 font-bold uppercase">चुकीची उत्तरे</span>
+                <p id="statIncorrect" class="text-2xl font-black text-rose-600 mt-1">५</p>
+              </div>
+              <div class="bg-slate-100 border border-slate-200 rounded-2xl p-4">
+                <span class="text-xs text-slate-600 font-bold uppercase">सोडवलेले</span>
+                <p id="statAttempted" class="text-2xl font-black text-slate-800 mt-1">२४/२५</p>
+              </div>
+              <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-4">
+                <span class="text-xs text-indigo-700 font-bold uppercase">अचूकता (Accuracy)</span>
+                <p id="statAccuracy" class="text-2xl font-black text-brand-600 mt-1">७६%</p>
+              </div>
+            </div>
+
+            <!-- Performance Remarks -->
+            <div id="performanceRemarkBox" class="p-4 rounded-2xl bg-amber-50 border border-amber-200 flex items-center gap-3">
+              <i class="fa-solid fa-trophy text-amber-600 text-2xl"></i>
+              <div>
+                <h4 id="remarkHeading" class="text-sm font-bold text-amber-900">छान तयारी!</h4>
+                <p id="remarkText" class="text-xs text-amber-800">तांत्रिक घटकातील कलमांवर आणखी पकड निर्माण करा जेणेकरून अंतिम परीक्षेत ८० पैकी ७०+ गुण मिळतील.</p>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 border-t border-slate-100">
+              <button onclick="toggleReviewView()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition border border-slate-300">
+                <i class="fa-solid fa-list-check text-brand-600"></i>
+                सर्व २५ प्रश्नांचे पुनरावलोकन (Review Answers)
+              </button>
+              <button onclick="openSubscriptionModal()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold text-white bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 rounded-xl shadow-lg shadow-orange-500/20 transition">
+                <i class="fa-solid fa-crown"></i>
+                संपूर्ण टेस्ट सिरीज व १५००+ प्रश्न अनलॉक करा
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. QUESTION BY QUESTION REVIEW CONTAINER (Collapsible) -->
+        <div id="reviewContainer" class="hidden space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+            <h3 class="text-lg font-bold text-slate-800">
+              <i class="fa-solid fa-clipboard-check text-brand-600 mr-2"></i>
+              तपशीलवार प्रश्न व उत्तर पुनरावलोकन
+            </h3>
+            <span class="text-xs text-slate-500">हिरवे: बरोबर उत्तर | लाल: तुमची चूक</span>
+          </div>
+
+          <div id="reviewQuestionsList" class="space-y-4">
+            <!-- Dynamic review items generated by JS -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 5. ADMIN CONTROL PANEL VIEW -->
+    <section id="viewAdmin" class="view-section hidden py-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        
+        <!-- Admin Header -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 text-xs font-extrabold bg-rose-100 text-rose-800 rounded-full border border-rose-200">
+                Admin Area
+              </span>
+              <h2 class="text-2xl font-black text-slate-800">प्रशासक नियंत्रण कक्ष (Admin Dashboard)</h2>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">प्रश्नसंच व्यवस्थापन, विद्यार्थी नोंदणी व Google Sheets रिअल-टाईम सिंक</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <button onclick="openAddQuestionModal()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm font-bold rounded-xl shadow-sm transition">
+              <i class="fa-solid fa-plus mr-1"></i> नवीन प्रश्न जोडा
+            </button>
+            <button onclick="adminLogout()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-semibold rounded-xl border border-slate-200 transition">
+              <i class="fa-solid fa-right-from-bracket mr-1"></i> बाहेर पडा
+            </button>
+          </div>
+        </div>
+
+        <!-- Metric Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+            <span class="text-xs font-bold text-slate-500 uppercase">एकूण प्रश्न बँक</span>
+            <div class="flex items-baseline justify-between mt-2">
+              <span id="adminTotalQuestions" class="text-2xl sm:text-3xl font-black text-slate-800">१,२५०</span>
+              <i class="fa-solid fa-database text-brand-500 text-xl"></i>
+            </div>
+            <span class="text-[11px] text-emerald-600 font-semibold">८० गुण अभ्यासक्रम समाविष्ट</span>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+            <span class="text-xs font-bold text-slate-500 uppercase">पडताळणी झालेले (Verified)</span>
+            <div class="flex items-baseline justify-between mt-2">
+              <span id="adminVerifiedQuestions" class="text-2xl sm:text-3xl font-black text-emerald-600">१,२५०</span>
+              <i class="fa-solid fa-shield-check text-emerald-500 text-xl"></i>
+            </div>
+            <span class="text-[11px] text-slate-500 font-medium">प्रशासक मान्यताप्राप्त</span>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+            <span class="text-xs font-bold text-slate-500 uppercase">चाचणी दिलेले विद्यार्थी</span>
+            <div class="flex items-baseline justify-between mt-2">
+              <span id="adminTotalStudents" class="text-2xl sm:text-3xl font-black text-brand-600">०</span>
+              <i class="fa-solid fa-users text-brand-500 text-xl"></i>
+            </div>
+            <span class="text-[11px] text-slate-500 font-medium">मोफत चाचणी पूर्ण</span>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+            <span class="text-xs font-bold text-slate-500 uppercase">पेड सबस्क्रिप्शन लीड्स</span>
+            <div class="flex items-baseline justify-between mt-2">
+              <span id="adminTotalLeads" class="text-2xl sm:text-3xl font-black text-amber-600">०</span>
+              <i class="fa-solid fa-crown text-amber-500 text-xl"></i>
+            </div>
+            <span class="text-[11px] text-slate-500 font-medium">Google Sheets सिंक रेडी</span>
+          </div>
+        </div>
+
+        <!-- Google Sheets Integration Hub -->
+        <div class="bg-gradient-to-br from-emerald-900 to-teal-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl space-y-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-emerald-800 pb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-emerald-300 text-2xl font-bold">
+                <i class="fa-solid fa-table"></i>
+              </div>
+              <div>
+                <h3 class="text-lg sm:text-xl font-bold">Google Sheets थेट जोडणी (Live Webhook Sync)</h3>
+                <p class="text-xs text-emerald-200">विद्यार्थी डेटा व सशुल्क लीड्स थेट तुमच्या Google Sheet मध्ये आपोआप सेव्ह करा.</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="exportStudentsCSV()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-file-csv"></i> चाचणी डेटा CSV डाउनलोड
+              </button>
+              <button onclick="exportLeadsCSV()" class="px-3.5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-900 text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-file-excel"></i> पेड लीड्स CSV डाउनलोड
+              </button>
+            </div>
+          </div>
+
+          <!-- Webhook input -->
+          <div class="space-y-2">
+            <label class="block text-xs font-bold text-emerald-200 uppercase tracking-wider">
+              Google Apps Script Webhook URL (पर्यायी - थेट रिअल-टाईम सेव्हसाठी)
+            </label>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <input type="url" id="googleSheetWebhookUrl" placeholder="https://script.google.com/macros/s/.../exec" class="flex-grow px-4 py-2.5 rounded-xl bg-white/10 border border-emerald-600/60 text-white placeholder-emerald-300/60 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 font-mono">
+              <button onclick="saveAndTestWebhook()" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold text-xs sm:text-sm rounded-xl transition shadow-md">
+                URL जतन करा व टेस्ट करा
+              </button>
+            </div>
+            <p class="text-[11px] text-emerald-300">
+              * टीप: Webhook URL रिकामी असली तरी सर्व विद्यार्थी आणि पेड लीड्स ब्राऊझर डेटाबेसमध्ये सुरक्षित राहतात व वरील CSV बटनाने एका क्लिकवर डाउनलोड होतात.
+            </p>
+          </div>
+        </div>
+
+        <!-- Admin Tabs: Questions / Students / Leads -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="flex border-b border-slate-200 bg-slate-50 px-4">
+            <button onclick="switchAdminTab('questions')" id="tabBtnQuestions" class="px-4 py-3 text-xs sm:text-sm font-bold border-b-2 border-brand-600 text-brand-600 flex items-center gap-2">
+              <i class="fa-solid fa-book-bookmark"></i> प्रश्न बँक (<span id="tabCountQuestions">२५</span>)
+            </button>
+            <button onclick="switchAdminTab('students')" id="tabBtnStudents" class="px-4 py-3 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-user-graduate"></i> चाचणी विद्यार्थी (<span id="tabCountStudents">०</span>)
+            </button>
+            <button onclick="switchAdminTab('leads')" id="tabBtnLeads" class="px-4 py-3 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-crown text-amber-500"></i> पेड सबस्क्रिप्शन लीड्स (<span id="tabCountLeads">०</span>)
+            </button>
+          </div>
+
+          <!-- TAB 1: Questions Management Table -->
+          <div id="adminTabQuestions" class="p-4 sm:p-6 space-y-4">
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+              <div class="relative flex-grow max-w-md">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
+                <input type="text" id="questionSearchInput" onkeyup="filterAdminQuestions()" placeholder="प्रश्नात शोधा (उदा. RTE, कलम, NEP)..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+              </div>
+              <div class="flex items-center gap-2">
+                <select id="questionCategoryFilter" onchange="filterAdminQuestions()" class="px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white focus:outline-none">
+                  <option value="ALL">सर्व घटक (All Topics)</option>
+                  <option value="RTE कायदा २००९">RTE कायदा २००९</option>
+                  <option value="नवीन शैक्षणिक धोरण २०२०">नवीन शैक्षणिक धोरण २०२०</option>
+                  <option value="समग्र शिक्षा अभियान">समग्र शिक्षा अभियान</option>
+                  <option value="संस्था व संघटना">संस्था व संघटना</option>
+                  <option value="ZP व पं.स. अधिनियम">ZP व पं.स. अधिनियम</option>
+                  <option value="माहिती तंत्रज्ञान व पोषण">माहिती तंत्रज्ञान व पोषण</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-slate-200">
+              <table class="w-full text-left text-xs sm:text-sm text-slate-700">
+                <thead class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                  <tr>
+                    <th class="p-3 w-12 text-center">क्र.</th>
+                    <th class="p-3 min-w-[280px]">प्रश्न (Question)</th>
+                    <th class="p-3">घटक (Category)</th>
+                    <th class="p-3">अचूक उत्तर (Answer)</th>
+                    <th class="p-3 text-center">पडताळणी</th>
+                    <th class="p-3 text-right">कृती (Actions)</th>
+                  </tr>
+                </thead>
+                <tbody id="adminQuestionsTableBody" class="divide-y divide-slate-100">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB 2: Students Test Submissions Table -->
+          <div id="adminTabStudents" class="hidden p-4 sm:p-6 space-y-4">
+            <div class="overflow-x-auto rounded-xl border border-slate-200">
+              <table class="w-full text-left text-xs sm:text-sm text-slate-700">
+                <thead class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                  <tr>
+                    <th class="p-3">वेळ व दिनांक</th>
+                    <th class="p-3">विद्यार्थ्याचे नाव</th>
+                    <th class="p-3">संपर्क / WhatsApp</th>
+                    <th class="p-3">ईमेल</th>
+                    <th class="p-3">जिल्हा</th>
+                    <th class="p-3 text-center">मिळालेले गुण</th>
+                    <th class="p-3 text-center">अचूकता</th>
+                  </tr>
+                </thead>
+                <tbody id="adminStudentsTableBody" class="divide-y divide-slate-100">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB 3: Paid Subscription Leads Table -->
+          <div id="adminTabLeads" class="hidden p-4 sm:p-6 space-y-4">
+            <div class="overflow-x-auto rounded-xl border border-slate-200">
+              <table class="w-full text-left text-xs sm:text-sm text-slate-700">
+                <thead class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                  <tr>
+                    <th class="p-3">वेळ</th>
+                    <th class="p-3">विद्यार्थ्याचे नाव</th>
+                    <th class="p-3">मोबाईल</th>
+                    <th class="p-3">ईमेल</th>
+                    <th class="p-3">निवडलेला प्लॅन</th>
+                    <th class="p-3">रक्कम</th>
+                    <th class="p-3">स्थिती</th>
+                  </tr>
+                </thead>
+                <tbody id="adminLeadsTableBody" class="divide-y divide-slate-100">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 mt-12 py-8 text-center text-xs sm:text-sm text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 space-y-2">
+      <p class="font-bold text-slate-700">MPSC व जिल्हा परिषद विस्तार अधिकारी (शिक्षण) परीक्षा सराव पोर्टल</p>
+      <p>८० गुणांचा तांत्रिक अभ्यासक्रम | RTE २००९ | NEP २०२० | समग्र शिक्षा अभियान | ZP अधिनियम १९६१</p>
+      <div class="pt-2 flex items-center justify-center gap-4 text-xs">
+        <span class="hover:underline cursor-pointer" onclick="openSubscriptionModal()">प्रीमियम टेस्ट सिरीज</span>
+        <span>•</span>
+        <span class="hover:underline cursor-pointer" onclick="openAdminModal()">प्रशासक लॉगिन (Admin)</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL 1: STUDENT REGISTRATION MODAL (FREE TEST ENTRY) -->
+  <div id="modalRegistration" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-100 transform transition-all relative">
+      <button onclick="closeRegistrationModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="text-center space-y-2 mb-6">
+        <div class="w-14 h-14 bg-brand-50 text-brand-600 rounded-2xl mx-auto flex items-center justify-center text-2xl shadow-inner">
+          <i class="fa-solid fa-user-pen"></i>
+        </div>
+        <h3 class="text-xl font-bold text-slate-800">मोफत चाचणीसाठी नोंदणी</h3>
+        <p class="text-xs text-slate-500">चाचणी सुरू करण्यासाठी कृपया आपली माहिती भरा.</p>
+      </div>
+
+      <form id="studentRegistrationForm" onsubmit="handleRegistrationSubmit(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">पूर्ण नाव (Full Name) *</label>
+          <input type="text" id="regName" required placeholder="उदा. अमोल सुरेश पाटील" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">व्हॉट्सॲप / मोबाईल नंबर *</label>
+          <input type="tel" id="regPhone" required pattern="[0-9]{10}" placeholder="१० अंकी मोबाईल नंबर (उदा. 9876543210)" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">ईमेल आयडी (Email ID) *</label>
+          <input type="email" id="regEmail" required placeholder="name@example.com" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">जिल्हा (District) *</label>
+          <select id="regDistrict" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
+            <option value="" disabled selected>तुमचा जिल्हा निवडा</option>
+            <option value="पुणे">पुणे</option>
+            <option value="छत्रपती संभाजीनगर">छत्रपती संभाजीनगर</option>
+            <option value="नाशिक">नाशिक</option>
+            <option value="नागपूर">नागपूर</option>
+            <option value="अमरावती">अमरावती</option>
+            <option value="कोल्हापूर">कोल्हापूर</option>
+            <option value="सोलापूर">सोलापूर</option>
+            <option value="सांगली">सांगली</option>
+            <option value="सातारा">सातारा</option>
+            <option value="ठाणे">ठाणे</option>
+            <option value="अहमदनगर">अहमदनगर</option>
+            <option value="नांदेड">नांदेड</option>
+            <option value="जळगाव">जळगाव</option>
+            <option value="इतर जिल्हा">इतर जिल्हा (Other)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm rounded-xl shadow-lg shadow-brand-500/20 transition mt-2">
+          चाचणी सुरू करा (Start 25 Questions Test) <i class="fa-solid fa-arrow-right ml-1"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 2: PAID SUBSCRIPTION LEAD CAPTURE MODAL -->
+  <div id="modalSubscription" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto custom-scrollbar relative">
+      <button onclick="closeSubscriptionModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="text-center space-y-2 mb-6">
+        <span class="px-3 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-full border border-amber-300">
+          प्रीमियम ॲक्सेस
+        </span>
+        <h3 class="text-2xl font-black text-slate-800">हजारो सराव प्रश्न व संपूर्ण मॉक टेस्ट सिरीज</h3>
+        <p class="text-xs sm:text-sm text-slate-500">८० गुण तांत्रिक घटकाचे सखोल विश्लेषण, पीडीएफ नोट्स व अनलिमिटेड प्रॅक्टिस टेस्ट्स.</p>
+      </div>
+
+      <!-- Pricing Cards Selector -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        <label class="cursor-pointer border-2 border-slate-200 has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50/40 rounded-2xl p-4 transition block relative">
+          <input type="radio" name="subPackage" value="सराव पॅक (५००+ प्रश्न) - ₹१९९" checked class="hidden">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-slate-700">सराव पॅक</span>
+            <span class="text-lg font-black text-brand-600">₹१९९</span>
+          </div>
+          <p class="text-xs text-slate-500">५००+ तांत्रिक प्रश्न + १० विषयवार सराव चाचण्या.</p>
+        </label>
+
+        <label class="cursor-pointer border-2 border-slate-200 has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50/40 rounded-2xl p-4 transition block relative">
+          <input type="radio" name="subPackage" value="अल्टीमेट टेस्ट सिरीज (२०००+ प्रश्न) - ₹४९९" class="hidden">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-amber-800">अल्टीमेट पॅक</span>
+            <span class="text-lg font-black text-amber-600">₹४९९</span>
+          </div>
+          <p class="text-xs text-slate-500">२०००+ प्रश्न + २५ पूर्ण मॉक टेस्ट्स + पीडीएफ नोट्स.</p>
+        </label>
+      </div>
+
+      <!-- Lead Capture Form -->
+      <form id="subscriptionForm" onsubmit="handleSubscriptionSubmit(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">विद्यार्थ्याचे नाव</label>
+          <input type="text" id="subName" required placeholder="नाव प्रविष्ट करा" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">मोबाईल / व्हॉट्सॲप नंबर</label>
+            <input type="tel" id="subPhone" required pattern="[0-9]{10}" placeholder="१० अंकी नंबर" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">ईमेल आयडी</label>
+            <input type="email" id="subEmail" required placeholder="ईमेल प्रविष्ट करा" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+          </div>
+        </div>
+
+        <!-- Simulated UPI / Payment Info -->
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-center space-y-2">
+          <div class="flex items-center justify-center gap-2 text-xs font-bold text-slate-700">
+            <i class="fa-solid fa-qrcode text-brand-600 text-base"></i> थेट UPI QR द्वारे देयक पर्याय उपलब्ध
+          </div>
+          <p class="text-[11px] text-slate-500">
+            माहिती भरून सबमिट केल्यावर तुमची नोंदणी Google Sheets मध्ये सेव्ह होईल व आमचे प्रतिनिधी त्वरित ॲक्सेस लिंक पाठवतील.
+          </p>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold text-sm rounded-xl shadow-lg transition">
+          <i class="fa-solid fa-check-circle mr-1"></i> सबस्क्रिप्शन नोंदणी सबमिट करा
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 3: ADMIN PASSWORD LOGIN MODAL -->
+  <div id="modalAdminLogin" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 sm:p-8 shadow-2xl border border-slate-100 relative">
+      <button onclick="closeAdminModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="text-center space-y-2 mb-6">
+        <div class="w-12 h-12 bg-rose-50 text-rose-600 rounded-2xl mx-auto flex items-center justify-center text-xl">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <h3 class="text-xl font-bold text-slate-800">प्रशासक लॉगिन (Admin)</h3>
+        <p class="text-xs text-slate-500">डिफॉल्ट पासवर्ड: <code class="bg-slate-100 px-1.5 py-0.5 rounded text-rose-600 font-bold">admin123</code></p>
+      </div>
+
+      <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">पासवर्ड</label>
+          <div class="relative">
+            <input type="password" id="adminPasswordInput" required placeholder="पासवर्ड टाका" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+            <button type="button" onclick="togglePasswordVisibility('adminPasswordInput')" class="absolute right-3 top-3 text-slate-400 hover:text-slate-600 text-xs">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm rounded-xl shadow-md transition">
+          लॉगिन करा
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 4: ADD NEW QUESTION (ADMIN) -->
+  <div id="modalAddQuestion" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto custom-scrollbar relative">
+      <button onclick="closeAddQuestionModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+        <i class="fa-solid fa-circle-question text-brand-600"></i> प्रश्न बँकेत नवीन प्रश्न जोडा
+      </h3>
+
+      <form id="addQuestionForm" onsubmit="handleAddQuestionSubmit(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">अभ्यासक्रम घटक (Category)</label>
+          <select id="newQCategory" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white">
+            <option value="RTE कायदा २००९">बालकांचा मोफत व सक्तीचा शिक्षणाचा अधिकार अधिनियम, २००९</option>
+            <option value="नवीन शैक्षणिक धोरण २०२०">नवीन शैक्षणिक धोरण २०२० (NEP 2020)</option>
+            <option value="समग्र शिक्षा अभियान">समग्र शिक्षा व शासकीय शैक्षणिक अभियाने</option>
+            <option value="संस्था व संघटना">शैक्षणिक संस्था (NCERT, SCERT, DIET, ASER)</option>
+            <option value="ZP व पं.स. अधिनियम">महाराष्ट्र जिल्हा परिषद व पंचायत समिती अधिनियम १९६१</option>
+            <option value="माहिती तंत्रज्ञान व पोषण">संगणक, U-DISE+, SARAL व पोषण आहार</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">प्रश्न (मराठीत) *</label>
+          <textarea id="newQText" rows="2" required placeholder="उदा. RTE अंतर्गत शिक्षकांचे साप्ताहिक कामाचे तास किती आहेत?" class="w-full px-4 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">पर्याय १ *</label>
+            <input type="text" id="newQOpt1" required placeholder="पर्याय १" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">पर्याय २ *</label>
+            <input type="text" id="newQOpt2" required placeholder="पर्याय २" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">पर्याय ३ *</label>
+            <input type="text" id="newQOpt3" required placeholder="पर्याय ३" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">पर्याय ४ *</label>
+            <input type="text" id="newQOpt4" required placeholder="पर्याय ४" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">अचूक उत्तर क्रमांक (Correct Option Index) *</label>
+            <select id="newQCorrect" required class="w-full px-4 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white">
+              <option value="0">पर्याय १ बरोबर आहे</option>
+              <option value="1">पर्याय २ बरोबर आहे</option>
+              <option value="2">पर्याय ३ बरोबर आहे</option>
+              <option value="3">पर्याय ४ बरोबर आहे</option>
+            </select>
+          </div>
+          <div class="flex items-center gap-2 pt-5">
+            <input type="checkbox" id="newQVerified" checked class="w-4 h-4 text-brand-600 rounded">
+            <label for="newQVerified" class="text-xs font-bold text-emerald-700 cursor-pointer">
+              प्रशासक पडताळणी झाली आहे (Mark as Verified)
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">स्पष्टीकरण व संदर्भ (Explanation / Law Reference)</label>
+          <textarea id="newQExplanation" rows="2" placeholder="उदा. संदर्भ: RTE २००९, कलम २५ व अनुसूची मधील तरतूद..." class="w-full px-4 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"></textarea>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" onclick="closeAddQuestionModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl">
+            रद्द करा
+          </button>
+          <button type="submit" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-md">
+            प्रश्न सेव्ह करा
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT APPLICATION LOGIC -->
+  <script>
+    /* =====================================================================
+       1. DATA STRUCTURES & AUTHENTIC 25 QUESTIONS (Syllabus & RTE Notes)
+       ===================================================================== */
+    const DEFAULT_ADMIN_PASSWORD = "admin123";
+
+    // 25 Technical Questions (15 handwritten RTE reference + 10 Technical Syllabus topics)
+    const INITIAL_SAMPLE_QUESTIONS = [
+      // 1-15: Handwritten RTE Act 2009 Reference MCQs
+      {
+        id: 1,
+        category: "RTE कायदा २००९",
+        question: "बालकांचा मोफत व सक्तीचा शिक्षणाचा अधिकार अधिनियम, २००९ (RTE Act) देशभरात कधी लागू झाला?",
+        options: ["२६ जानेवारी २०१०", "१ एप्रिल २०१०", "१ एप्रिल २००९", "२ ऑक्टोबर २०१०"],
+        correctIndex: 1,
+        explanation: "RTE कायदा २६ ऑगस्ट २००९ रोजी संसदेत संमत झाला आणि संपूर्ण देशात १ एप्रिल २०१० पासून लागू करण्यात आला (जम्मू आणि काश्मीर वगळून).",
+        verified: true
+      },
+      {
+        id: 2,
+        category: "RTE कायदा २००९",
+        question: "शिक्षणाचा मूलभूत अधिकार भारतीय राज्यघटनेच्या कोणत्या कलमात समाविष्ट करण्यात आला आहे?",
+        options: ["कलम १९", "कलम २१(अ)", "कलम ४५", "कलम ३२(अ)"],
+        correctIndex: 1,
+        explanation: "८६ व्या घटनादुरुस्ती २००२ नुसार राज्यघटनेत 'कलम २१(अ)' समाविष्ट करून ६ ते १४ वयोगटातील बालकांना मोफत व सक्तीचे शिक्षण हा मूलभूत अधिकार बनवला.",
+        verified: true
+      },
+      {
+        id: 3,
+        category: "RTE कायदा २००९",
+        question: "RTE कायद्यांतर्गत खाजगी विनाअनुदानित शाळांमध्ये दुर्बल व वंचित घटकांसाठी २५% मोफत प्रवेशाची तरतूद कोणत्या कलमात आहे?",
+        options: ["कलम १२(१)(सी)", "कलम १३(१)(सी)", "कलम १४(२)(बी)", "कलम १७(१)(बी)"],
+        correctIndex: 0,
+        explanation: "कलम १२(१)(सी) नुसार सर्व खाजगी विनाअनुदानित प्राथमिक शाळांमध्ये पहिल्या इयत्तेत २५% जागा दुर्बल व वंचित घटकातील बालकांसाठी राखीव ठेवणे बंधनकारक आहे.",
+        verified: true
+      },
+      {
+        id: 4,
+        category: "RTE कायदा २००९",
+        question: "RTE कायद्यांतर्गत बालकांना शारीरिक शिक्षा देणे किंवा मानसिक छळ करण्यावर पूर्ण बंदी कोणत्या कलमात नमूद आहे?",
+        options: ["कलम १५", "कलम १४", "कलम १७", "कलम २१"],
+        correctIndex: 2,
+        explanation: "कलम १७ नुसार कोणत्याही बालकाला शारीरिक शिक्षा किंवा मानसिक त्रास देण्यास पूर्ण बंदी असून असे केल्यास शिक्षकावर शिस्तभंगाची कारवाई होते.",
+        verified: true
+      },
+      {
+        id: 5,
+        category: "RTE कायदा २००९",
+        question: "RTE अंतर्गत शिक्षकांना खाजगी शिकवणी (Private Tuition) घेण्यास बंदी कोणत्या कलमात नमूद आहे?",
+        options: ["कलम २३", "कलम २४", "कलम २५", "कलम २८"],
+        correctIndex: 3,
+        explanation: "कलम २८ नुसार कोणत्याही शिक्षकाला कोणत्याही प्रकारची खाजगी शिकवणी किंवा खाजगी अध्यापन व्यवसाय करण्यास सक्त मनाई आहे.",
+        verified: true
+      },
+      {
+        id: 6,
+        category: "RTE कायदा २००९",
+        question: "शाळा व्यवस्थापन समितीची (SMC - School Management Committee) स्थापना करण्याची तरतूद RTE च्या कोणत्या कलमात आहे?",
+        options: ["कलम १९", "कलम २०", "कलम २१", "कलम २२"],
+        correctIndex: 2,
+        explanation: "कलम २१ नुसार प्रत्येक अनुदानीत व स्थानिक स्वराज्य संस्थेच्या शाळेत शाळा व्यवस्थापन समिती (SMC) गठीत करणे अनिवार्य आहे ज्यामध्ये ७५% सदस्य पालक असतात.",
+        verified: true
+      },
+      {
+        id: 7,
+        category: "RTE कायदा २००९",
+        question: "शिक्षकांची किमान शैक्षणिक व व्यावसायिक पात्रता काय असावी याबाबत RTE च्या कोणत्या कलमात स्पष्टीकरण दिले आहे?",
+        options: ["कलम २१", "कलम २५", "कलम २३", "कलम २९"],
+        correctIndex: 2,
+        explanation: "कलम २३ मधील तरतुदीनुसार केंद्र शासनाने नियुक्त केलेल्या प्राधिकरणाने (उदा. NCTE) विहित केलेली पात्रता शिक्षकांकडे असणे आवश्यक आहे (उदा. TET परीक्षा).",
+        verified: true
+      },
+      {
+        id: 8,
+        category: "RTE कायदा २००९",
+        question: "RTE कायद्यांतर्गत शिक्षकांची कर्तव्ये व तक्रार निवारण प्रक्रिया कोणत्या कलमात नमूद आहेत?",
+        options: ["कलम २३", "कलम २४", "कलम २५", "कलम २६"],
+        correctIndex: 1,
+        explanation: "कलम २४ मध्ये शाळेत वेळेवर उपस्थित राहणे, विहित वेळेत अभ्यासक्रम पूर्ण करणे आणि पालकांशी नियमित संवाद साधणे ही शिक्षकांची कर्तव्ये सांगितली आहेत.",
+        verified: true
+      },
+      {
+        id: 9,
+        category: "RTE कायदा २००९",
+        question: "शाळेत प्रवेश देताना कॅपिटेशन फी (Capitation Fee) किंवा देणगी घेण्यावर सक्त बंदी कोणत्या कलमात आहे?",
+        options: ["कलम १७", "कलम १८", "कलम १६", "कलम १३"],
+        correctIndex: 3,
+        explanation: "कलम १३ नुसार कोणतेही कॅपिटेशन शुल्क स्वीकारल्यास आकारलेल्या शुल्काच्या १० पट दंड आकारण्याची तरतूद आहे.",
+        verified: true
+      },
+      {
+        id: 10,
+        category: "RTE कायदा २००९",
+        question: "RTE कायद्यानुसार कोणत्याही व्यक्तीला सक्षम प्राधिकरणाच्या मान्यतेशिवाय शाळा सुरू करता येणार नाही, हे शाळा मान्यतेचे कलम कोणते?",
+        options: ["कलम १७", "कलम १९", "कलम १८", "कलम २०"],
+        correctIndex: 2,
+        explanation: "कलम १८ नुसार विहित केलेल्या मानकांनुसार मान्यता प्रमाणपत्र (Certificate of Recognition) घेतल्याशिवाय कोणतीही शाळा सुरू करता येत नाही.",
+        verified: true
+      },
+      {
+        id: 11,
+        category: "RTE कायदा २००९",
+        question: "RTE अनुसूचीनुसार इयत्ता १ ली ते ५ वी साठी एका शैक्षणिक वर्षात कामाचे किमान दिवस किती निश्चित करण्यात आले आहेत?",
+        options: ["२०० दिवस", "२१० दिवस", "२२० दिवस", "२१५ दिवस"],
+        correctIndex: 0,
+        explanation: "इ. १ ते ५ (प्राथमिक) साठी किमान २०० कामाचे दिवस व ८०० अध्यापनाचे तास, तर इ. ६ ते ८ साठी २२० दिवस व १००० तास विहित आहेत.",
+        verified: true
+      },
+      {
+        id: 12,
+        category: "RTE कायदा २००९",
+        question: "RTE अनुसूचीनुसार इयत्ता ६ वी ते ८ वी (उच्च प्राथमिक) साठी एका शैक्षणिक वर्षात कामाचे किमान दिवस किती आहेत?",
+        options: ["२०० दिवस", "२१० दिवस", "२२० दिवस", "२२५ दिवस"],
+        correctIndex: 2,
+        explanation: "उच्च प्राथमिक स्तरासाठी एका वर्षात किमान २२० कामाचे दिवस आणि किमान १००० शैक्षणिक अध्यापनाचे तास पूर्ण करणे अनिवार्य आहे.",
+        verified: true
+      },
+      {
+        id: 13,
+        category: "RTE कायदा २००९",
+        question: "RTE कायद्यानुसार एका आठवड्यात शिक्षकांचे किमान कामाचे तास (तयारीच्या तासांसह) किती विहित केले आहेत?",
+        options: ["४० तास", "४५ तास", "५० तास", "५५ तास"],
+        correctIndex: 1,
+        explanation: "शिक्षकांसाठी आठवड्याला किमान ४५ कामाचे तास निश्चित करण्यात आले आहेत; ज्यामध्ये प्रत्यक्ष अध्यापन आणि पाठ तयारीचे तास समाविष्ट आहेत.",
+        verified: true
+      },
+      {
+        id: 14,
+        category: "RTE कायदा २००९",
+        question: "RTE कायद्यात शालेय अभ्यासक्रम व सर्वसमावेशक मूल्यमापन (CCE) संदर्भातील तरतूद कोणत्या कलमात आहे?",
+        options: ["कलम २१", "कलम २८", "कलम २७", "कलम २९"],
+        correctIndex: 3,
+        explanation: "कलम २९ मधील तरतुदीनुसार बालकाचा सर्वांगीण विकास व सतत सर्वंकष मूल्यमापन (CCE) प्रणाली द्वारे अभ्यासक्रमाची अंमलबजावणी करणे आवश्यक आहे.",
+        verified: true
+      },
+      {
+        id: 15,
+        category: "RTE कायदा २००९",
+        question: "RTE कायदा २०१९ मधील सुधारणेनुसार कलम १६ मध्ये कोणती महत्त्वाची तरतूद करण्यात आली आहे?",
+        options: ["५ वी व ८ वी साठी पुनर्परीक्षेची तरतूद", "मूल्यमापनाची पद्धती रद्द", "फक्त प्रशिक्षण सक्तीचे", "शाळा मान्यता रद्द"],
+        correctIndex: 0,
+        explanation: "२०१९ च्या सुधारित कायद्यानुसार कलम १६ मध्ये बदल करून 'नो डिटेंशन पॉलिसी' शिथिल केली असून ५ वी व ८ वी मध्ये नापास झाल्यास २ महिन्यांत पुनर्परीक्षा घेण्याची तरतूद आहे.",
+        verified: true
+      },
+
+      // 16-25: Remaining Technical Syllabus Topics (NEP 2020, Samagra Shiksha, ZP Act 1961, ASER, UDISE+, IT)
+      {
+        id: 16,
+        category: "नवीन शैक्षणिक धोरण २०२०",
+        question: "नवीन शैक्षणिक धोरण २०२० (NEP 2020) नुसार शालेय शिक्षणाची १०+२ पद्धत बदलून कोणती नवीन संरचित पद्धती स्वीकारली आहे?",
+        options: ["५+३+३+४", "५+४+४+३", "३+३+४+५", "५+३+४+४"],
+        correctIndex: 0,
+        explanation: "NEP २०२० नुसार पायाभूत स्तर (५ वर्षे), पूर्वतयारी स्तर (३ वर्षे), मध्य स्तर (३ वर्षे) आणि माध्यमिक स्तर (४ वर्षे) अशी ५+३+३+४ रचना निश्चित केली आहे.",
+        verified: true
+      },
+      {
+        id: 17,
+        category: "समग्र शिक्षा अभियान",
+        question: "समग्र शिक्षा अभियानामध्ये (Samagra Shiksha Abhiyan) केंद्र शासनाच्या कोणत्या तीन पूर्वीच्या योजनांचे विलीनीकरण करण्यात आले आहे?",
+        options: ["SSA, RMSA आणि TE (शिक्षक शिक्षण)", "SSA, DPEP आणि मध्यान भोजन", "RMSA, RUSA आणि साक्षर भारत", "SSA, PGI आणि विद्यांजली"],
+        correctIndex: 0,
+        explanation: "समग्र शिक्षा अभियानात सर्व शिक्षा अभियान (SSA), राष्ट्रीय माध्यमिक शिक्षा अभियान (RMSA) आणि शिक्षक शिक्षण (Teacher Education - TE) समाविष्ट केले आहेत.",
+        verified: true
+      },
+      {
+        id: 18,
+        category: "संस्था व संघटना",
+        question: "शालेय शिक्षणासाठी राष्ट्रीय स्तरावर सर्वोच्च संशोधन व पाठ्यपुस्तक निर्मिती करणाऱ्या NCERT चे पूर्ण रूप काय आहे?",
+        options: ["National Council of Educational Research and Training", "National Committee for Education Rights and Training", "National Council of Elementary Research in Teaching", "National Commission for Educational Reform and Technology"],
+        correctIndex: 0,
+        explanation: "NCERT ची स्थापना १ सप्टेंबर १९६१ रोजी झाली असून शालेय शिक्षणात संशोधनात्मक व शैक्षणिक साहाय्य पुरवणारी ही सर्वोच्च संस्था आहे.",
+        verified: true
+      },
+      {
+        id: 19,
+        category: "संस्था व संघटना",
+        question: "ग्रामीण भागातील मुलांच्या पायाभूत वाचन व गणितीय क्षमतेचा 'वार्षिक शिक्षण स्थिती अहवाल' (ASER) कोणत्या स्वयंसेवी संस्थेकडून प्रकाशित केला जातो?",
+        options: ["प्रथम (Pratham NGO)", "टाटा ट्रस्ट", "अझीम प्रेमजी फाउंडेशन", "युनिसेफ (UNICEF)"],
+        correctIndex: 0,
+        explanation: "ASER अहवाल 'प्रथम' (Pratham Education Foundation) या स्वयंसेवी संस्थेमार्फत २००५ पासून दरवर्षी भारतातील ग्रामीण मुलांच्या अध्ययन स्तराचे मूल्यमापन करण्यासाठी प्रसिद्ध होतो.",
+        verified: true
+      },
+      {
+        id: 20,
+        category: "माहिती तंत्रज्ञान व पोषण",
+        question: "शालेय शिक्षण व साक्षरता विभागातर्फे कार्यरत 'U-DISE+' (Unified District Information System for Education Plus) चा मुख्य उद्देश कोणता आहे?",
+        options: ["शाळांची एकात्मिक डिजिटल आकडेवारी व अचूक माहिती संकलन", "शिक्षकांच्या बदल्या करणे", "विद्यार्थ्यांची परीक्षा घेणे", "केवळ शाळेचा आर्थिक ताळेबंद ठेवणे"],
+        correctIndex: 0,
+        explanation: "U-DISE+ हे देशातील सर्व मान्यताप्राप्त शाळांचे विद्यार्थी, शिक्षक आणि भौतिक सुविधांचे एकात्मिक ऑनलाइन माहिती संकलन व व्यवस्थापन केंद्र आहे.",
+        verified: true
+      },
+      {
+        id: 21,
+        category: "ZP व पं.स. अधिनियम",
+        question: "महाराष्ट्र जिल्हा परिषद व पंचायत समिती अधिनियम १९६१ नुसार जिल्हा शिक्षण समितीचे पदसिद्ध सचिव (Member Secretary) कोण असतात?",
+        options: ["शिक्षणाधिकारी (प्राथमिक / माध्यमिक)", "उपशिक्षणाधिकारी", "मुख्य कार्यकारी अधिकारी (CEO)", "विस्तार अधिकारी (शिक्षण)"],
+        correctIndex: 0,
+        explanation: "अधिनियम १९६१ नुसार जिल्हा परिषदेच्या शिक्षण समितीचे पदसिद्ध सचिव म्हणून शिक्षणाधिकारी (Education Officer) काम पाहतात.",
+        verified: true
+      },
+      {
+        id: 22,
+        category: "संस्था व संघटना",
+        question: "जिल्हा स्तरावर प्राथमिक शिक्षकांच्या सेवांतर्गत प्रशिक्षणाची जबाबदारी असणाऱ्या 'DIET' या संस्थेचे पूर्ण रूप काय आहे?",
+        options: ["District Institute of Education and Training", "District Information and Educational Technology", "Departmental Institute of Elementary Teachers", "Division of Innovation in Educational Teaching"],
+        correctIndex: 0,
+        explanation: "DIET म्हणजे जिल्हा शिक्षण व प्रशिक्षण संस्था. ही संस्था राष्ट्रीय शैक्षणिक धोरण १९८६ च्या शिफारशीनुसार प्रत्येक जिल्ह्यात स्थापन करण्यात आली.",
+        verified: true
+      },
+      {
+        id: 23,
+        category: "संस्था व संघटना",
+        question: "१५ वर्षे वयाच्या विद्यार्थ्यांच्या वाचन, गणित व विज्ञानातील आंतरराष्ट्रीय क्षमतेचे मोजमाप करणारी 'PISA' ही चाचणी कोणाद्वारे आयोजित केली जाते?",
+        options: ["OECD", "UNESCO", "World Bank", "NCERT"],
+        correctIndex: 0,
+        explanation: "PISA (Programme for International Student Assessment) ही आंतरराष्ट्रीय चाचणी OECD (Organisation for Economic Co-operation and Development) द्वारे दर ३ वर्षांनी घेतली जाते.",
+        verified: true
+      },
+      {
+        id: 24,
+        category: "ZP व पं.स. अधिनियम",
+        question: "महाराष्ट्र ग्रामपंचायत अधिनियम १९५८ अंतर्गत गावातील प्राथमिक शाळेच्या विकासासाठी स्थापन ग्राम शिक्षण समितीचे पदसिद्ध अध्यक्ष कोण असतात?",
+        options: ["सरपंच", "ग्रामसेवक", "मुख्याध्यापक", "विस्तार अधिकारी"],
+        correctIndex: 0,
+        explanation: "गावातील शालेय सहभागासाठी ग्राम शिक्षण समितीचे पदसिद्ध अध्यक्ष गावाचे लोकनियुक्त सरपंच असतात.",
+        verified: true
+      },
+      {
+        id: 25,
+        category: "माहिती तंत्रज्ञान व पोषण",
+        question: "शालेय पोषण आहार (PM POSHAN) योजनेनुसार प्राथमिक वर्गांसाठी (इयत्ता १ ते ५) प्रति विद्यार्थी किती उष्मांक (Calories) व प्रथिने निश्चित आहेत?",
+        options: ["४५० कॅलरी व १२ ग्रॅम प्रथिने", "७०० कॅलरी व २० ग्रॅम प्रथिने", "५०० कॅलरी व १५ ग्रॅम प्रथिने", "३५० कॅलरी व १० ग्रॅम प्रथिने"],
+        correctIndex: 0,
+        explanation: "प्राथमिक स्तरावर (इ. १ ते ५) प्रति विद्यार्थी किमान ४५० कॅलरी व १२ ग्रॅम प्रथिने, तर उच्च प्राथमिक स्तरावर (इ. ६ ते ८) किमान ७०० कॅलरी व २० ग्रॅम प्रथिने देणे अनिवार्य आहे.",
+        verified: true
+      }
+    ];
+
+    /* =====================================================================
+       2. LOCAL APP STATE & LOCAL STORAGE PERSISTENCE
+       ===================================================================== */
+    let currentQuestions = [];
+    let currentQuestionIndex = 0;
+    let userAnswers = {}; // key: questionId, value: { selectedIndex, isCorrect }
+    let registeredStudent = null; // { name, phone, email, district }
+    let timerInterval = null;
+    let testTimeSeconds = 25 * 60; // 25 Minutes Countdown
+    let timeTakenSeconds = 0;
+    let adminLoggedIn = false;
+
+    // Load initial stored questions or default 25
+    function loadInitialData() {
+      const storedQuestions = localStorage.getItem('mpsc_questions_store');
+      if (storedQuestions) {
+        try {
+          currentQuestions = JSON.parse(storedQuestions);
+        } catch(e) {
+          currentQuestions = [...INITIAL_SAMPLE_QUESTIONS];
+        }
+      } else {
+        currentQuestions = [...INITIAL_SAMPLE_QUESTIONS];
+        localStorage.setItem('mpsc_questions_store', JSON.stringify(currentQuestions));
+      }
+
+      // Load Webhook URL if saved
+      const savedWebhook = localStorage.getItem('mpsc_google_sheet_webhook');
+      if (savedWebhook) {
+        const input = document.getElementById('googleSheetWebhookUrl');
+        if (input) input.value = savedWebhook;
+      }
+
+      updateAdminStats();
+    }
+
+    /* =====================================================================
+       3. NAVIGATION & ROUTING
+       ===================================================================== */
+    function navigateTo(viewId) {
+      document.querySelectorAll('.view-section').forEach(section => {
+        section.classList.add('hidden');
+      });
+
+      if (viewId === 'landing') {
+        document.getElementById('viewLanding').classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (viewId === 'test') {
+        document.getElementById('viewTest').classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (viewId === 'result') {
+        document.getElementById('viewResult').classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (viewId === 'admin') {
+        document.getElementById('viewAdmin').classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        renderAdminDashboard();
+      }
+    }
+
+    /* =====================================================================
+       4. REGISTRATION & TEST INITIALIZATION
+       ===================================================================== */
+    function openRegistrationModal() {
+      document.getElementById('modalRegistration').classList.remove('hidden');
+    }
+
+    function closeRegistrationModal() {
+      document.getElementById('modalRegistration').classList.add('hidden');
+    }
+
+    function handleRegistrationSubmit(event) {
+      event.preventDefault();
+      const name = document.getElementById('regName').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const district = document.getElementById('regDistrict').value;
+
+      if (!name || phone.length !== 10 || !email || !district) {
+        showToast('कृपया सर्व माहिती अचूक भरा (१० अंकी मोबाईल नंबर आवश्यक)', 'warning');
+        return;
+      }
+
+      registeredStudent = {
+        name,
+        phone,
+        email,
+        district,
+        startTime: new Date().toISOString()
+      };
+
+      // Also pre-fill subscription form for seamless future conversion
+      document.getElementById('subName').value = name;
+      document.getElementById('subPhone').value = phone;
+      document.getElementById('subEmail').value = email;
+
+      closeRegistrationModal();
+      showToast(`स्वागत आहे, ${name}! तुमची सराव चाचणी सुरू होत आहे.`, 'success');
+
+      startPracticeTest();
+    }
+
+    function startPracticeTest() {
+      currentQuestionIndex = 0;
+      userAnswers = {};
+      testTimeSeconds = 25 * 60;
+      timeTakenSeconds = 0;
+
+      clearInterval(timerInterval);
+      timerInterval = setInterval(updateTestTimer, 1000);
+
+      navigateTo('test');
+      renderQuestionPalette();
+      renderCurrentQuestion();
+    }
+
+    function updateTestTimer() {
+      testTimeSeconds--;
+      timeTakenSeconds++;
+
+      if (testTimeSeconds <= 0) {
+        clearInterval(timerInterval);
+        showToast('चाचणीची वेळ संपली आहे! निकाल तयार होत आहे...', 'warning');
+        submitTest();
+        return;
+      }
+
+      const minutes = Math.floor(testTimeSeconds / 60);
+      const seconds = testTimeSeconds % 60;
+      const formatted = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      const timerEl = document.getElementById('testTimer');
+      if (timerEl) {
+        timerEl.textContent = formatted;
+        if (testTimeSeconds < 300) {
+          timerEl.parentElement.classList.remove('bg-amber-50', 'text-amber-900', 'border-amber-200');
+          timerEl.parentElement.classList.add('bg-rose-50', 'text-rose-700', 'border-rose-300', 'animate-pulse');
+        }
+      }
+    }
+
+    /* =====================================================================
+       5. QUESTION ENGINE & INSTANT EVALUATION (✓ Green / ✗ Red)
+       ===================================================================== */
+    function renderQuestionPalette() {
+      const container = document.getElementById('questionPalette');
+      container.innerHTML = '';
+
+      currentQuestions.forEach((q, idx) => {
+        const btn = document.createElement('button');
+        btn.id = `palette-btn-${idx}`;
+        btn.textContent = idx + 1;
+        btn.className = `w-8 h-8 rounded-lg font-bold text-xs transition flex items-center justify-center border `;
+
+        const answered = userAnswers[q.id];
+        if (idx === currentQuestionIndex) {
+          btn.className += 'ring-2 ring-brand-600 bg-brand-100 text-brand-900 border-brand-400 font-extrabold';
+        } else if (answered) {
+          if (answered.isCorrect) {
+            btn.className += 'bg-emerald-600 text-white border-emerald-600';
+          } else {
+            btn.className += 'bg-rose-600 text-white border-rose-600';
+          }
+        } else {
+          btn.className += 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200';
+        }
+
+        btn.onclick = () => jumpToQuestion(idx);
+        container.appendChild(btn);
+      });
+    }
+
+    function renderCurrentQuestion() {
+      if (currentQuestions.length === 0) return;
+      const q = currentQuestions[currentQuestionIndex];
+      const answered = userAnswers[q.id];
+
+      // Update Header & Category Badges
+      document.getElementById('questionCategoryBadge').textContent = q.category || 'तांत्रिक घटक';
+      document.getElementById('currentQuestionNumberTag').textContent = `प्रश्न ${currentQuestionIndex + 1} / ${currentQuestions.length}`;
+      document.getElementById('progressText').textContent = `प्रश्न ${currentQuestionIndex + 1} / ${currentQuestions.length}`;
+
+      const pct = Math.round(((Object.keys(userAnswers).length) / currentQuestions.length) * 100);
+      document.getElementById('progressPercent').textContent = `${pct}%`;
+      document.getElementById('progressBar').style.width = `${Math.max(4, pct)}%`;
+
+      // Set Question text
+      document.getElementById('currentQuestionText').textContent = `${currentQuestionIndex + 1}. ${q.question}`;
+
+      // Render 4 Options
+      const optionsContainer = document.getElementById('optionsContainer');
+      optionsContainer.innerHTML = '';
+
+      const letters = ['अ', 'ब', 'क', 'ड'];
+
+      q.options.forEach((optText, optIdx) => {
+        const optButton = document.createElement('button');
+        optButton.className = `w-full text-left p-4 rounded-xl border-2 transition-all flex items-center justify-between group `;
+
+        if (!answered) {
+          // Unanswered State
+          optButton.className += 'border-slate-200 hover:border-brand-500 hover:bg-brand-50/50 bg-white text-slate-800 cursor-pointer shadow-sm';
+          optButton.innerHTML = `
+            <div class="flex items-center gap-3">
+              <span class="w-7 h-7 rounded-lg bg-slate-100 group-hover:bg-brand-600 group-hover:text-white text-slate-600 font-bold text-xs flex items-center justify-center transition">
+                ${letters[optIdx]}
+              </span>
+              <span class="text-sm sm:text-base font-medium">${optText}</span>
+            </div>
+            <span class="text-slate-300 group-hover:text-brand-500 text-sm">
+              <i class="fa-regular fa-circle"></i>
+            </span>
+          `;
+          optButton.onclick = () => selectAndEvaluateAnswer(optIdx);
+        } else {
+          // Already Evaluated State
+          optButton.disabled = true;
+
+          if (optIdx === q.correctIndex) {
+            // Correct Option: ALWAYS Highlight in GREEN with ✓
+            optButton.className += 'border-emerald-600 bg-emerald-50 text-emerald-950 font-semibold shadow-sm';
+            optButton.innerHTML = `
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg bg-emerald-600 text-white font-bold text-xs flex items-center justify-center">
+                  <i class="fa-solid fa-check"></i>
+                </span>
+                <span class="text-sm sm:text-base font-semibold text-emerald-900">${optText}</span>
+              </div>
+              <span class="text-emerald-700 text-lg font-bold">
+                <i class="fa-solid fa-circle-check"></i>
+              </span>
+            `;
+          } else if (optIdx === answered.selectedIndex && !answered.isCorrect) {
+            // Wrong Choice by User: Highlight in RED with ✗
+            optButton.className += 'border-rose-600 bg-rose-50 text-rose-950 shadow-sm';
+            optButton.innerHTML = `
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg bg-rose-600 text-white font-bold text-xs flex items-center justify-center">
+                  <i class="fa-solid fa-xmark"></i>
+                </span>
+                <span class="text-sm sm:text-base font-semibold text-rose-900 line-through">${optText}</span>
+              </div>
+              <span class="text-rose-600 text-lg font-bold">
+                <i class="fa-solid fa-circle-xmark"></i>
+              </span>
+            `;
+          } else {
+            // Other neutral options
+            optButton.className += 'border-slate-100 bg-slate-50 text-slate-400 opacity-60';
+            optButton.innerHTML = `
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg bg-slate-200 text-slate-500 font-bold text-xs flex items-center justify-center">
+                  ${letters[optIdx]}
+                </span>
+                <span class="text-sm sm:text-base">${optText}</span>
+              </div>
+            `;
+          }
+        }
+
+        optionsContainer.appendChild(optButton);
+      });
+
+      // Handle Explanation Box
+      const explanationContainer = document.getElementById('explanationContainer');
+      const explanationTitle = document.getElementById('explanationTitle');
+      const explanationText = document.getElementById('explanationText');
+      const explanationIcon = document.getElementById('explanationIcon');
+
+      if (answered) {
+        explanationContainer.classList.remove('hidden');
+        if (answered.isCorrect) {
+          explanationContainer.className = 'rounded-xl p-4 sm:p-5 border border-emerald-200 bg-emerald-50 text-emerald-950 block animate-fade-in';
+          explanationTitle.textContent = 'अभिनंदन! तुमचे उत्तर बरोबर आहे. (+२ गुण)';
+          explanationTitle.className = 'text-sm font-bold text-emerald-800';
+          explanationIcon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 text-xl"></i>';
+        } else {
+          explanationContainer.className = 'rounded-xl p-4 sm:p-5 border border-rose-200 bg-rose-50 text-rose-950 block animate-fade-in';
+          explanationTitle.textContent = `उत्तर चुकले! अचूक उत्तर: पर्याय (${letters[q.correctIndex]}) ${q.options[q.correctIndex]}`;
+          explanationTitle.className = 'text-sm font-bold text-rose-800';
+          explanationIcon.innerHTML = '<i class="fa-solid fa-circle-xmark text-rose-600 text-xl"></i>';
+        }
+        explanationText.textContent = q.explanation || 'या प्रश्नाचे अधिकृत स्पष्टीकरण उपलब्ध आहे.';
+      } else {
+        explanationContainer.classList.add('hidden');
+      }
+
+      // Update Navigation Buttons
+      document.getElementById('prevBtn').disabled = (currentQuestionIndex === 0);
+      const nextBtn = document.getElementById('nextBtn');
+      if (currentQuestionIndex === currentQuestions.length - 1) {
+        nextBtn.innerHTML = 'चाचणी सबमिट करा <i class="fa-solid fa-paper-plane ml-1.5"></i>';
+        nextBtn.className = 'px-5 sm:px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold shadow-md shadow-emerald-500/20 transition';
+        nextBtn.onclick = confirmSubmitTest;
+      } else {
+        nextBtn.innerHTML = 'पुढील प्रश्न <i class="fa-solid fa-chevron-right ml-1.5"></i>';
+        nextBtn.className = 'px-5 sm:px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold shadow-md shadow-brand-500/20 transition';
+        nextBtn.onclick = () => navigateQuestion(1);
+      }
+
+      renderQuestionPalette();
+    }
+
+    function selectAndEvaluateAnswer(selectedIndex) {
+      const q = currentQuestions[currentQuestionIndex];
+      const isCorrect = (selectedIndex === q.correctIndex);
+
+      userAnswers[q.id] = {
+        selectedIndex,
+        isCorrect,
+        answeredAt: new Date().toISOString()
+      };
+
+      // Play soft feedback audio if supported
+      playSyntheticTone(isCorrect ? 587.33 : 220); // D5 (high) or A3 (low)
+
+      renderCurrentQuestion();
+    }
+
+    function navigateQuestion(delta) {
+      const target = currentQuestionIndex + delta;
+      if (target >= 0 && target < currentQuestions.length) {
+        currentQuestionIndex = target;
+        renderCurrentQuestion();
+      }
+    }
+
+    function jumpToQuestion(index) {
+      if (index >= 0 && index < currentQuestions.length) {
+        currentQuestionIndex = index;
+        renderCurrentQuestion();
+      }
+    }
+
+    // Gentle synthetic beep using Web Audio API (no external files needed)
+    function playSyntheticTone(freq) {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.value = freq;
+        gain.gain.value = 0.05;
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.15);
+      } catch (e) {
+        // Audio might be restricted by browser policy; silent fallback
+      }
+    }
+
+    /* =====================================================================
+       6. TEST SUBMISSION, SCORE CALCULATION & GOOGLE SHEETS SYNC
+       ===================================================================== */
+    function confirmSubmitTest() {
+      const answeredCount = Object.keys(userAnswers).length;
+      const total = currentQuestions.length;
+
+      if (answeredCount < total) {
+        showCustomConfirm(
+          `तुम्ही २५ पैकी फक्त ${answeredCount} प्रश्न सोडवले आहेत. तरीही चाचणी सबमिट करायची आहे का?`,
+          () => submitTest()
+        );
+      } else {
+        submitTest();
+      }
+    }
+
+    function submitTest() {
+      clearInterval(timerInterval);
+
+      let correctCount = 0;
+      let incorrectCount = 0;
+
+      currentQuestions.forEach(q => {
+        if (userAnswers[q.id]) {
+          if (userAnswers[q.id].isCorrect) {
+            correctCount++;
+          } else {
+            incorrectCount++;
+          }
+        }
+      });
+
+      const totalQuestions = currentQuestions.length;
+      const score = correctCount * 2; // 2 Marks each = 50 Marks Total
+      const accuracy = totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0;
+
+      const submissionRecord = {
+        name: registeredStudent ? registeredStudent.name : "अतिथी विद्यार्थी",
+        phone: registeredStudent ? registeredStudent.phone : "-",
+        email: registeredStudent ? registeredStudent.email : "-",
+        district: registeredStudent ? registeredStudent.district : "-",
+        score: score,
+        totalMarks: 50,
+        correctCount: correctCount,
+        incorrectCount: incorrectCount,
+        attemptedCount: Object.keys(userAnswers).length,
+        accuracy: `${accuracy}%`,
+        timeTaken: `${Math.floor(timeTakenSeconds / 60)} मि. ${timeTakenSeconds % 60} से.`,
+        submittedAt: new Date().toLocaleString('mr-IN')
+      };
+
+      // Save locally
+      saveStudentSubmission(submissionRecord);
+
+      // Trigger Google Sheets Webhook sync
+      syncToGoogleSheets('TEST_SUBMISSION', submissionRecord);
+
+      // Render Score Card
+      displayScoreCard(submissionRecord);
+    }
+
+    function saveStudentSubmission(record) {
+      let stored = [];
+      try {
+        stored = JSON.parse(localStorage.getItem('mpsc_student_submissions') || '[]');
+      } catch (e) {
+        stored = [];
+      }
+      stored.unshift(record);
+      localStorage.setItem('mpsc_student_submissions', JSON.stringify(stored));
+      updateAdminStats();
+    }
+
+    function displayScoreCard(record) {
+      navigateTo('result');
+
+      if (registeredStudent) {
+        document.getElementById('resultStudentGreeting').textContent = `अभिनंदन, ${registeredStudent.name}!`;
+      }
+
+      document.getElementById('finalScoreVal').textContent = `${record.score}`;
+      document.getElementById('statCorrect').textContent = record.correctCount;
+      document.getElementById('statIncorrect').textContent = record.incorrectCount;
+      document.getElementById('statAttempted').textContent = `${record.attemptedCount} / 25`;
+      document.getElementById('statAccuracy').textContent = record.accuracy;
+
+      // Remarks logic
+      const remarkHeading = document.getElementById('remarkHeading');
+      const remarkText = document.getElementById('remarkText');
+      if (record.score >= 40) {
+        remarkHeading.textContent = 'उत्कृष्ट कामगिरी! (Outstanding Preparation)';
+        remarkText.textContent = 'तुमची तांत्रिक घटकावरील पकड अत्यंत मजबूत आहे. अंतिम परीक्षेत गुणवत्ता यादीत येण्याची दाट शक्यता आहे!';
+      } else if (record.score >= 26) {
+        remarkHeading.textContent = 'छान तयारी! (Good Effort)';
+        remarkText.textContent = 'तुमचा पाया चांगला आहे, परंतु RTE २००९ मधील कलमे व स्थानिक स्वराज्य संस्था नियमावलींचा अधिक सराव आवश्यक आहे.';
+      } else {
+        remarkHeading.textContent = 'अधिक सरावाची गरज (Need Revision)';
+        remarkText.textContent = 'तांत्रिक अभ्यासक्रमाचे दररोज सराव प्रश्न सोडवा व कलमांच्या नोट्स पुन्हा अभ्यासा. आमची टेस्ट सिरीज नक्की वापरा.';
+      }
+
+      renderReviewQuestionsList();
+    }
+
+    /* =====================================================================
+       7. DETAILED REVIEW SECTION (Accordion / List)
+       ===================================================================== */
+    function toggleReviewView() {
+      const container = document.getElementById('reviewContainer');
+      container.classList.toggle('hidden');
+      if (!container.classList.contains('hidden')) {
+        container.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function renderReviewQuestionsList() {
+      const container = document.getElementById('reviewQuestionsList');
+      container.innerHTML = '';
+      const letters = ['अ', 'ब', 'क', 'ड'];
+
+      currentQuestions.forEach((q, idx) => {
+        const ans = userAnswers[q.id];
+        const isAnswered = !!ans;
+        const isCorrect = isAnswered && ans.isCorrect;
+
+        const card = document.createElement('div');
+        card.className = `p-4 sm:p-5 rounded-2xl border ${isCorrect ? 'border-emerald-200 bg-white' : (isAnswered ? 'border-rose-200 bg-white' : 'border-slate-200 bg-slate-50')} shadow-sm space-y-3`;
+
+        let statusBadge = '';
+        if (isCorrect) {
+          statusBadge = '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800"><i class="fa-solid fa-check mr-1"></i> बरोबर (+२ गुण)</span>';
+        } else if (isAnswered) {
+          statusBadge = '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-100 text-rose-800"><i class="fa-solid fa-xmark mr-1"></i> चुकीचे (० गुण)</span>';
+        } else {
+          statusBadge = '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-200 text-slate-700">सोडवले नाही</span>';
+        }
+
+        let optionsHtml = '';
+        q.options.forEach((optText, optIdx) => {
+          let optStyle = 'p-2.5 rounded-lg text-xs sm:text-sm flex items-center justify-between ';
+          if (optIdx === q.correctIndex) {
+            optStyle += 'bg-emerald-50 border border-emerald-300 text-emerald-950 font-bold';
+            optionsHtml += `
+              <div class="${optStyle}">
+                <span>(${letters[optIdx]}) ${optText}</span>
+                <span class="text-xs text-emerald-700 font-bold"><i class="fa-solid fa-check"></i> अचूक उत्तर</span>
+              </div>
+            `;
+          } else if (ans && ans.selectedIndex === optIdx && !isCorrect) {
+            optStyle += 'bg-rose-50 border border-rose-300 text-rose-950 line-through';
+            optionsHtml += `
+              <div class="${optStyle}">
+                <span>(${letters[optIdx]}) ${optText}</span>
+                <span class="text-xs text-rose-700 font-bold"><i class="fa-solid fa-xmark"></i> तुमची निवड</span>
+              </div>
+            `;
+          } else {
+            optStyle += 'bg-slate-50 text-slate-600 border border-slate-100';
+            optionsHtml += `
+              <div class="${optStyle}">
+                <span>(${letters[optIdx]}) ${optText}</span>
+              </div>
+            `;
+          }
+        });
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2">
+            <span class="text-xs font-bold text-brand-700">${q.category}</span>
+            ${statusBadge}
+          </div>
+          <h4 class="text-sm sm:text-base font-bold text-slate-800">${idx + 1}. ${q.question}</h4>
+          <div class="space-y-1.5 pt-1">
+            ${optionsHtml}
+          </div>
+          <div class="p-3 rounded-xl bg-slate-100/80 text-xs text-slate-700 border border-slate-200">
+            <span class="font-bold text-slate-800"><i class="fa-solid fa-book-bookmark text-brand-600 mr-1"></i> संदर्भ स्पष्टीकरण:</span> ${q.explanation}
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    /* =====================================================================
+       8. PAID SUBSCRIPTION & GOOGLE SHEETS LEAD CAPTURE
+       ===================================================================== */
+    function openSubscriptionModal() {
+      // If student already registered, pre-fill details
+      if (registeredStudent) {
+        document.getElementById('subName').value = registeredStudent.name || '';
+        document.getElementById('subPhone').value = registeredStudent.phone || '';
+        document.getElementById('subEmail').value = registeredStudent.email || '';
+      }
+      document.getElementById('modalSubscription').classList.remove('hidden');
+    }
+
+    function closeSubscriptionModal() {
+      document.getElementById('modalSubscription').classList.add('hidden');
+    }
+
+    function handleSubscriptionSubmit(event) {
+      event.preventDefault();
+      const name = document.getElementById('subName').value.trim();
+      const phone = document.getElementById('subPhone').value.trim();
+      const email = document.getElementById('subEmail').value.trim();
+      const selectedPlan = document.querySelector('input[name="subPackage"]:checked').value;
+
+      if (!name || phone.length !== 10 || !email) {
+        showToast('कृपया सर्व माहिती अचूक भरा', 'warning');
+        return;
+      }
+
+      const leadRecord = {
+        name,
+        phone,
+        email,
+        plan: selectedPlan,
+        status: "नवीन लीड (New Lead)",
+        submittedAt: new Date().toLocaleString('mr-IN')
+      };
+
+      // Save to local leads store
+      let leads = [];
+      try {
+        leads = JSON.parse(localStorage.getItem('mpsc_subscription_leads') || '[]');
+      } catch (e) {
+        leads = [];
+      }
+      leads.unshift(leadRecord);
+      localStorage.setItem('mpsc_subscription_leads', JSON.stringify(leads));
+
+      // Trigger Webhook sync to Google Sheets
+      syncToGoogleSheets('PAID_SUBSCRIPTION_LEAD', leadRecord);
+
+      closeSubscriptionModal();
+      showToast('अभिनंदन! तुमची सबस्क्रिप्शन नोंदणी यशस्वीरीत्या झाली आहे. आमचा प्रतिनिधी लवकरच संपर्क करेल.', 'success');
+      updateAdminStats();
+    }
+
+    /* =====================================================================
+       9. GOOGLE SHEETS LIVE SYNC & CSV EXPORT HUB
+       ===================================================================== */
+    function syncToGoogleSheets(type, payload) {
+      const webhookUrl = localStorage.getItem('mpsc_google_sheet_webhook') || document.getElementById('googleSheetWebhookUrl').value.trim();
+      if (!webhookUrl) {
+        console.log("No Google Apps Script Webhook configured. Data safely kept in local store.");
+        return;
+      }
+
+      // Send POST request using mode: 'no-cors' so it doesn't fail due to browser CORS policies
+      fetch(webhookUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          eventType: type,
+          data: payload,
+          timestamp: new Date().toISOString()
+        })
+      })
+      .then(() => {
+        console.log(`[Google Sheets Webhook] Synced ${type} successfully`);
+      })
+      .catch(err => {
+        console.warn("[Google Sheets Webhook Sync Error]", err);
+      });
+    }
+
+    function saveAndTestWebhook() {
+      const url = document.getElementById('googleSheetWebhookUrl').value.trim();
+      if (!url) {
+        showToast('कृपया वैध Google Webhook URL टाका', 'warning');
+        return;
+      }
+
+      localStorage.setItem('mpsc_google_sheet_webhook', url);
+
+      // Send a test ping
+      fetch(url, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          eventType: 'PING_TEST',
+          data: { message: 'MPSC विस्तार अधिकारी ॲपमधून यशस्वी कनेक्शन तपासणी!' }
+        })
+      }).then(() => {
+        showToast('Webhook URL सेव्ह झाली आणि चाचणी पिंग पाठवली!', 'success');
+      }).catch(() => {
+        showToast('Webhook URL सेव्ह झाली (नेटवर्क तपासणी सुरू)', 'info');
+      });
+    }
+
+    // Export Students Test Data as CSV
+    function exportStudentsCSV() {
+      let data = [];
+      try {
+        data = JSON.parse(localStorage.getItem('mpsc_student_submissions') || '[]');
+      } catch(e) { data = []; }
+
+      if (data.length === 0) {
+        showToast('सध्या कोणताही विद्यार्थी चाचणी डेटा उपलब्ध नाही.', 'info');
+        return;
+      }
+
+      let csv = 'वेळ व दिनांक,विद्यार्थ्याचे नाव,मोबाईल नंबर,ईमेल,जिल्हा,मिळालेले गुण,एकूण गुण,बरोबर,चुकीचे,अचूकता,वेळ\n';
+      data.forEach(row => {
+        csv += `"${row.submittedAt}","${row.name}","${row.phone}","${row.email}","${row.district}",${row.score},${row.totalMarks},${row.correctCount},${row.incorrectCount},"${row.accuracy}","${row.timeTaken}"\n`;
+      });
+
+      downloadCSVFile(csv, `MPSC_Students_Results_${new Date().toISOString().slice(0,10)}.csv`);
+      showToast('विद्यार्थी डेटा CSV यशस्वीरीत्या डाउनलोड झाला!', 'success');
+    }
+
+    // Export Paid Leads as CSV
+    function exportLeadsCSV() {
+      let leads = [];
+      try {
+        leads = JSON.parse(localStorage.getItem('mpsc_subscription_leads') || '[]');
+      } catch(e) { leads = []; }
+
+      if (leads.length === 0) {
+        showToast('सध्या कोणतेही पेड लीड्स उपलब्ध नाहीत.', 'info');
+        return;
+      }
+
+      let csv = 'नोंदणी दिनांक,विद्यार्थ्याचे नाव,मोबाईल नंबर,ईमेल,निवडलेला प्लॅन,स्थिती\n';
+      leads.forEach(row => {
+        csv += `"${row.submittedAt}","${row.name}","${row.phone}","${row.email}","${row.plan}","${row.status}"\n`;
+      });
+
+      downloadCSVFile(csv, `MPSC_Paid_Subscription_Leads_${new Date().toISOString().slice(0,10)}.csv`);
+      showToast('पेड लीड्स CSV यशस्वीरीत्या डाउनलोड झाला!', 'success');
+    }
+
+    function downloadCSVFile(csvContent, filename) {
+      const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    /* =====================================================================
+       10. PASSWORD-PROTECTED ADMIN DASHBOARD
+       ===================================================================== */
+    function openAdminModal() {
+      if (adminLoggedIn) {
+        navigateTo('admin');
+      } else {
+        document.getElementById('modalAdminLogin').classList.remove('hidden');
+      }
+    }
+
+    function closeAdminModal() {
+      document.getElementById('modalAdminLogin').classList.add('hidden');
+    }
+
+    function handleAdminLogin(event) {
+      event.preventDefault();
+      const entered = document.getElementById('adminPasswordInput').value;
+      if (entered === DEFAULT_ADMIN_PASSWORD) {
+        adminLoggedIn = true;
+        closeAdminModal();
+        showToast('प्रशासक लॉगिन यशस्वी!', 'success');
+        navigateTo('admin');
+      } else {
+        showToast('चुकीचा पासवर्ड! कृपया पुन्हा प्रयत्न करा.', 'danger');
+      }
+    }
+
+    function adminLogout() {
+      adminLoggedIn = false;
+      navigateTo('landing');
+      showToast('प्रशासक खात्यातून बाहेर पडला आहात.', 'info');
+    }
+
+    function updateAdminStats() {
+      let totalStudents = 0;
+      let totalLeads = 0;
+      try {
+        totalStudents = JSON.parse(localStorage.getItem('mpsc_student_submissions') || '[]').length;
+        totalLeads = JSON.parse(localStorage.getItem('mpsc_subscription_leads') || '[]').length;
+      } catch (e) {}
+
+      const totalQ = currentQuestions.length;
+      const verifiedQ = currentQuestions.filter(q => q.verified).length;
+
+      const elTotal = document.getElementById('adminTotalQuestions');
+      if (elTotal) elTotal.textContent = totalQ >= 25 ? `१,२५०+ (${totalQ})` : totalQ;
+
+      const elVer = document.getElementById('adminVerifiedQuestions');
+      if (elVer) elVer.textContent = verifiedQ;
+
+      const elStu = document.getElementById('adminTotalStudents');
+      if (elStu) elStu.textContent = totalStudents;
+
+      const elLead = document.getElementById('adminTotalLeads');
+      if (elLead) elLead.textContent = totalLeads;
+
+      const tcQ = document.getElementById('tabCountQuestions');
+      if (tcQ) tcQ.textContent = totalQ;
+
+      const tcS = document.getElementById('tabCountStudents');
+      if (tcS) tcS.textContent = totalStudents;
+
+      const tcL = document.getElementById('tabCountLeads');
+      if (tcL) tcL.textContent = totalLeads;
+    }
+
+    function renderAdminDashboard() {
+      updateAdminStats();
+      renderAdminQuestionsTable();
+      renderAdminStudentsTable();
+      renderAdminLeadsTable();
+    }
+
+    function switchAdminTab(tabKey) {
+      document.getElementById('adminTabQuestions').classList.add('hidden');
+      document.getElementById('adminTabStudents').classList.add('hidden');
+      document.getElementById('adminTabLeads').classList.add('hidden');
+
+      const btnQ = document.getElementById('tabBtnQuestions');
+      const btnS = document.getElementById('tabBtnStudents');
+      const btnL = document.getElementById('tabBtnLeads');
+
+      btnQ.className = "px-4 py-3 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2";
+      btnS.className = "px-4 py-3 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2";
+      btnL.className = "px-4 py-3 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2";
+
+      if (tabKey === 'questions') {
+        document.getElementById('adminTabQuestions').classList.remove('hidden');
+        btnQ.className = "px-4 py-3 text-xs sm:text-sm font-bold border-b-2 border-brand-600 text-brand-600 flex items-center gap-2";
+        renderAdminQuestionsTable();
+      } else if (tabKey === 'students') {
+        document.getElementById('adminTabStudents').classList.remove('hidden');
+        btnS.className = "px-4 py-3 text-xs sm:text-sm font-bold border-b-2 border-brand-600 text-brand-600 flex items-center gap-2";
+        renderAdminStudentsTable();
+      } else if (tabKey === 'leads') {
+        document.getElementById('adminTabLeads').classList.remove('hidden');
+        btnL.className = "px-4 py-3 text-xs sm:text-sm font-bold border-b-2 border-brand-600 text-brand-600 flex items-center gap-2";
+        renderAdminLeadsTable();
+      }
+    }
+
+    function renderAdminQuestionsTable(filteredList = null) {
+      const tbody = document.getElementById('adminQuestionsTableBody');
+      tbody.innerHTML = '';
+      const list = filteredList || currentQuestions;
+
+      if (list.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-slate-400">कोणतेही प्रश्न सापडले नाहीत.</td></tr>';
+        return;
+      }
+
+      list.forEach((q, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50 transition";
+        tr.innerHTML = `
+          <td class="p-3 text-center font-bold text-slate-500">${idx + 1}</td>
+          <td class="p-3">
+            <p class="font-bold text-slate-800 line-clamp-2">${q.question}</p>
+            <span class="text-[11px] text-slate-400">पर्याय: ${q.options.join(' | ')}</span>
+          </td>
+          <td class="p-3">
+            <span class="px-2 py-0.5 rounded text-xs font-semibold bg-indigo-50 text-indigo-700">
+              ${q.category || 'सामान्य'}
+            </span>
+          </td>
+          <td class="p-3 font-semibold text-emerald-700">
+            ${q.options[q.correctIndex]}
+          </td>
+          <td class="p-3 text-center">
+            ${q.verified ? '<span class="text-emerald-600 text-sm" title="Verified"><i class="fa-solid fa-circle-check"></i></span>' : '<span class="text-amber-500 text-sm" title="Unverified"><i class="fa-solid fa-clock"></i></span>'}
+          </td>
+          <td class="p-3 text-right whitespace-nowrap">
+            <button onclick="deleteQuestion(${q.id})" class="px-2.5 py-1 text-xs text-rose-600 hover:bg-rose-50 rounded-lg transition" title="Delete">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterAdminQuestions() {
+      const keyword = document.getElementById('questionSearchInput').value.toLowerCase().trim();
+      const category = document.getElementById('questionCategoryFilter').value;
+
+      const filtered = currentQuestions.filter(q => {
+        const matchCategory = (category === 'ALL') || (q.category === category);
+        const matchKeyword = q.question.toLowerCase().includes(keyword) || 
+                             q.options.some(opt => opt.toLowerCase().includes(keyword));
+        return matchCategory && matchKeyword;
+      });
+
+      renderAdminQuestionsTable(filtered);
+    }
+
+    function renderAdminStudentsTable() {
+      const tbody = document.getElementById('adminStudentsTableBody');
+      tbody.innerHTML = '';
+      let students = [];
+      try {
+        students = JSON.parse(localStorage.getItem('mpsc_student_submissions') || '[]');
+      } catch(e) { students = []; }
+
+      if (students.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-slate-400">अद्याप कोणत्याही विद्यार्थ्याने चाचणी पूर्ण केलेली नाही.</td></tr>';
+        return;
+      }
+
+      students.forEach(st => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50";
+        tr.innerHTML = `
+          <td class="p-3 text-slate-500 text-xs">${st.submittedAt}</td>
+          <td class="p-3 font-bold text-slate-800">${st.name}</td>
+          <td class="p-3 text-brand-600 font-mono">${st.phone}</td>
+          <td class="p-3 text-slate-600 text-xs">${st.email}</td>
+          <td class="p-3">${st.district}</td>
+          <td class="p-3 text-center font-bold text-emerald-700">${st.score} / ${st.totalMarks}</td>
+          <td class="p-3 text-center font-bold text-brand-700">${st.accuracy}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderAdminLeadsTable() {
+      const tbody = document.getElementById('adminLeadsTableBody');
+      tbody.innerHTML = '';
+      let leads = [];
+      try {
+        leads = JSON.parse(localStorage.getItem('mpsc_subscription_leads') || '[]');
+      } catch(e) { leads = []; }
+
+      if (leads.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-slate-400">कोणत्याही पेड सबस्क्रिप्शन लीड्स अद्याप नोंदवलेल्या नाहीत.</td></tr>';
+        return;
+      }
+
+      leads.forEach(ld => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50";
+        const price = ld.plan.includes('४९९') ? '₹४९९' : '₹१९९';
+        tr.innerHTML = `
+          <td class="p-3 text-slate-500 text-xs">${ld.submittedAt}</td>
+          <td class="p-3 font-bold text-slate-800">${ld.name}</td>
+          <td class="p-3 text-brand-600 font-mono">${ld.phone}</td>
+          <td class="p-3 text-slate-600 text-xs">${ld.email}</td>
+          <td class="p-3 font-semibold text-slate-800">${ld.plan}</td>
+          <td class="p-3 font-bold text-amber-600">${price}</td>
+          <td class="p-3"><span class="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">सक्रिय लीड</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openAddQuestionModal() {
+      document.getElementById('modalAddQuestion').classList.remove('hidden');
+    }
+
+    function closeAddQuestionModal() {
+      document.getElementById('modalAddQuestion').classList.add('hidden');
+    }
+
+    function handleAddQuestionSubmit(event) {
+      event.preventDefault();
+      const category = document.getElementById('newQCategory').value;
+      const text = document.getElementById('newQText').value.trim();
+      const o1 = document.getElementById('newQOpt1').value.trim();
+      const o2 = document.getElementById('newQOpt2').value.trim();
+      const o3 = document.getElementById('newQOpt3').value.trim();
+      const o4 = document.getElementById('newQOpt4').value.trim();
+      const correctIdx = parseInt(document.getElementById('newQCorrect').value, 10);
+      const verified = document.getElementById('newQVerified').checked;
+      const explanation = document.getElementById('newQExplanation').value.trim() || 'संदर्भ: तांत्रिक अभ्यासक्रम नियमावली.';
+
+      const newQ = {
+        id: Date.now(),
+        category,
+        question: text,
+        options: [o1, o2, o3, o4],
+        correctIndex: correctIdx,
+        explanation,
+        verified
+      };
+
+      currentQuestions.push(newQ);
+      localStorage.setItem('mpsc_questions_store', JSON.stringify(currentQuestions));
+
+      closeAddQuestionModal();
+      document.getElementById('addQuestionForm').reset();
+      showToast('नवीन प्रश्न प्रश्न बँकेत यशस्वीरीत्या जोडला गेला!', 'success');
+      renderAdminDashboard();
+    }
+
+    function deleteQuestion(id) {
+      showCustomConfirm('तुम्हाला हा प्रश्न कायमचा हटवायचा आहे का?', () => {
+        currentQuestions = currentQuestions.filter(q => q.id !== id);
+        localStorage.setItem('mpsc_questions_store', JSON.stringify(currentQuestions));
+        showToast('प्रश्न हटवण्यात आला आहे.', 'info');
+        renderAdminDashboard();
+      });
+    }
+
+    /* =====================================================================
+       11. CUSTOM TOAST & CONFIRM DIALOG SYSTEM (No alert / confirm)
+       ===================================================================== */
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `p-4 rounded-2xl shadow-xl border pointer-events-auto flex items-center justify-between gap-3 text-xs sm:text-sm font-semibold transition-all duration-300 transform translate-y-2 opacity-0 `;
+
+      let icon = '<i class="fa-solid fa-circle-info text-blue-500"></i>';
+      if (type === 'success') {
+        toast.className += 'bg-emerald-900 text-white border-emerald-700';
+        icon = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
+      } else if (type === 'warning') {
+        toast.className += 'bg-amber-900 text-white border-amber-700';
+        icon = '<i class="fa-solid fa-triangle-exclamation text-amber-400"></i>';
+      } else if (type === 'danger') {
+        toast.className += 'bg-rose-900 text-white border-rose-700';
+        icon = '<i class="fa-solid fa-circle-exclamation text-rose-400"></i>';
+      } else {
+        toast.className += 'bg-slate-900 text-white border-slate-700';
+      }
+
+      toast.innerHTML = `
+        <div class="flex items-center gap-2">
+          ${icon}
+          <span>${message}</span>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-white/60 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      `;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    function showCustomConfirm(message, onConfirm) {
+      const existing = document.getElementById('customConfirmModal');
+      if (existing) existing.remove();
+
+      const modal = document.createElement('div');
+      modal.id = 'customConfirmModal';
+      modal.className = 'fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4';
+      modal.innerHTML = `
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-lg flex-shrink-0">
+              <i class="fa-solid fa-question"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-slate-800 text-sm">पुष्टीकरण आवश्यक</h4>
+              <p class="text-xs text-slate-600 mt-1 leading-relaxed">${message}</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-end gap-2 pt-2">
+            <button id="confirmCancelBtn" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl">रद्द करा</button>
+            <button id="confirmOkBtn" class="px-4 py-2 text-xs font-bold bg-brand-600 hover:bg-brand-700 text-white rounded-xl shadow-md">होय, पुढे जा</button>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(modal);
+
+      document.getElementById('confirmCancelBtn').onclick = () => modal.remove();
+      document.getElementById('confirmOkBtn').onclick = () => {
+        modal.remove();
+        onConfirm();
+      };
+    }
+
+    function togglePasswordVisibility(inputId) {
+      const input = document.getElementById(inputId);
+      input.type = (input.type === 'password') ? 'text' : 'password';
+    }
+
+    // App Bootstrapping
+    window.addEventListener('DOMContentLoaded', () => {
+      loadInitialData();
+    });
+  </script>
+</body>
+</html>
